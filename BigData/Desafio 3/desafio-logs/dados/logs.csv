@@ -1,0 +1,5 @@
+timestamp,ip,url,status,user_agent,pais,estado,cidade
+2026-11-06 10:00:00,192.168.1.1,/home,200,Chrome,Brasil,SP,São Paulo
+2026-11-06 10:01:00,192.168.1.2,/produto,200,Firefox,Brasil,RJ,Rio de Janeiro
+2026-11-06 10:02:00,192.168.1.3,/home,200,Chrome,Brasil,SP,São Paulo
+2026-11-06 10:03:00,192.168.1.4,/checkout,500,Chrome,Argentina,Buenos Aires,Buenos Aires
