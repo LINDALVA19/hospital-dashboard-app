@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CH/UPE — Gestão e Transparência de Indicadores Hospitalares</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- BARRA LATERAL (MENU PRINCIPAL) -->
+    <aside class="sidebar" id="sidebar" aria-label="Navegação principal da plataforma">
+      <div class="sidebar__brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div>
+          <span class="brand-title">CH/UPE Dados</span>
+          <span class="brand-sub">Anuário 2025 • Base 2024</span>
+        </div>
+      </div>
+
+      <div class="sidebar__section-label">Navegação</div>
+      <nav class="side-nav">
+        <a href="#sec-resumo" class="side-link is-active">
+          <span class="side-link__dot"></span>
+          <span>Visão Geral &amp; KPIs</span>
+        </a>
+        <a href="#sec-graficos" class="side-link">
+          <span class="side-link__dot"></span>
+          <span>Modelos Gráficos</span>
+        </a>
+        <a href="#sec-unidades" class="side-link">
+          <span class="side-link__dot"></span>
+          <span>Unidades Hospitalares</span>
+        </a>
+        <a href="#sec-tabela" class="side-link">
+          <span class="side-link__dot"></span>
+          <span>Base de Indicadores</span>
+        </a>
+        <a href="#sec-comunicados" class="side-link">
+          <span class="side-link__dot"></span>
+          <span>Campanhas &amp; Avisos</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <label for="perfilSelect" class="sidebar__label">Perfil de visualização</label>
+        <select id="perfilSelect" class="select-control select-control--compact">
+          <option value="cidadao">Cidadão / Transparência</option>
+          <option value="academico">Pesquisador / UPE</option>
+          <option value="gestor">Gestor Hospitalar</option>
+        </select>
+        <div class="sidebar__note">
+          Complexo Hospitalar UPE<br />
+          CISAM • HUOC • PROCAPE
+        </div>
+      </div>
+    </aside>
+
+    <!-- OVERLAY PARA CELULAR -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="main-area">
+      <!-- TOPBAR SUPERIOR -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <button
+            type="button"
+            class="burger-btn"
+            id="burgerBtn"
+            aria-label="Alternar menu lateral"
+            aria-expanded="false"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="topbar__context">
+            <span class="topbar__eyebrow">Recife • Pernambuco • SUS / UPE</span>
+            <h1 class="topbar__title">Indicadores Hospitalares e Transparência</h1>
+          </div>
+        </div>
+
+        <div class="topbar__actions">
+          <button type="button" id="btnExportarCsv" class="btn btn--primary">
+            Exportar CSV
+          </button>
+          <button type="button" id="btnImprimir" class="btn btn--secondary">
+            Imprimir
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- SEÇÃO 1: FILTROS E KPIS -->
+        <section id="sec-resumo" class="block">
+          <div class="filter-panel">
+            <div class="filter-panel__grid">
+              <div class="field">
+                <label for="filtroUnidade">Unidade do Complexo</label>
+                <select id="filtroUnidade" class="select-control">
+                  <option value="TODOS">Consolidado CH/UPE (Todas as unidades)</option>
+                  <option value="CISAM">CISAM — Saúde da Mulher e Materno-Infantil</option>
+                  <option value="HUOC">HUOC — Hospital Universitário Oswaldo Cruz</option>
+                  <option value="PROCAPE">PROCAPE — Cardiologia e Cirurgia Cardíaca</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="filtroCategoria">Categoria</label>
+                <select id="filtroCategoria" class="select-control">
+                  <option value="TODAS">Todas as categorias</option>
+                  <option value="Infraestrutura">Infraestrutura</option>
+                  <option value="Assistencial">Assistencial</option>
+                  <option value="Cirurgico">Cirúrgico</option>
+                  <option value="Academico">Ensino e Pós-Graduação</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="filtroPeriodo">Período</label>
+                <select id="filtroPeriodo" class="select-control">
+                  <option value="2024">Ano completo • 2024</option>
+                  <option value="2024-S1">1º Semestre • 2024 (Projeção)</option>
+                  <option value="2024-S2">2º Semestre • 2024 (Projeção)</option>
+                </select>
+              </div>
+
+              <div class="field field--action">
+                <button type="button" id="btnLimparFiltros" class="btn btn--ghost">
+                  Resetar
+                </button>
+              </div>
+            </div>
+
+            <div class="filter-panel__bar">
+              <span class="status-dot"></span>
+              <span id="statusFiltroTexto">
+                Escopo ativo: Consolidado CH/UPE • Todas as categorias • Ano completo 2024
+              </span>
+            </div>
+          </div>
+
+          <!-- GRADE DE 4 KPIS -->
+          <div class="kpi-grid" id="kpiGrid"></div>
+        </section>
+
+        <!-- SEÇÃO 2: MODELOS DE GRÁFICOS ILUSTRATIVOS (PRONTOS PARA INTEGRAÇÃO COM BACK-END) -->
+        <section id="sec-graficos" class="block">
+          <div class="block__head">
+            <div>
+              <span class="block__tag">Modelo Visual de Front-end</span>
+              <h2>Painéis Gráficos de Apoio à Decisão</h2>
+              <p>
+                Representação ilustrativa da arquitetura visual para gráficos (os dados consolidados serão alimentados pela API do back-end).
+              </p>
+            </div>
+          </div>
+
+          <div class="charts-layout">
+            <!-- GRÁFICO 1: BARRAS COMPARATIVAS EM SVG -->
+            <article class="panel chart-panel chart-panel--wide">
+              <div class="panel__top">
+                <div>
+                  <h3>Comparativo de Indicadores Selecionados</h3>
+                  <p>Modelo ilustrativo em barras com escala proporcional</p>
+                </div>
+                <span class="chip-mock">Mock ilustrativo • Front-end</span>
+              </div>
+              <div id="graficoBarrasContainer" class="svg-chart-box"></div>
+            </article>
+
+            <!-- GRÁFICO 2: DISTRIBUIÇÃO POR EIXO / CATEGORIA EM SVG -->
+            <article class="panel chart-panel">
+              <div class="panel__top">
+                <div>
+                  <h3>Distribuição por Eixo Temático</h3>
+                  <p>Assistência, cirurgia, infraestrutura e ensino</p>
+                </div>
+                <span class="chip-mock">Estrutura de dados</span>
+              </div>
+              <div id="graficoRoscaContainer" class="svg-chart-box"></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- SEÇÃO 3: UNIDADES HOSPITALARES -->
+        <section id="sec-unidades" class="block">
+          <div class="block__head">
+            <div>
+              <h2>Unidades do Complexo Hospitalar da UPE</h2>
+              <p>Mais de 53.000 m² de área construída em Recife-PE voltados à assistência, ensino, pesquisa e extensão.</p>
+            </div>
+          </div>
+
+          <div class="units-grid" id="unitsGrid"></div>
+        </section>
+
+        <!-- SEÇÃO 4: TABELA DE INDICADORES -->
+        <section id="sec-tabela" class="block">
+          <div class="block__head block__head--row">
+            <div>
+              <h2>Detalhamento Tabular dos Indicadores</h2>
+              <p>Registros extraídos do CH em Números – Anuário Estatístico 2025 (ano-base 2024).</p>
+            </div>
+            <div class="search-wrap">
+              <input
+                type="search"
+                id="buscaTabela"
+                class="input-search"
+                placeholder="Filtrar por nome ou palavra-chave..."
+                aria-label="Filtrar indicadores na tabela"
+              />
+            </div>
+          </div>
+
+          <div class="panel panel--table">
+            <div class="table-scroll">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Indicador</th>
+                    <th>Categoria</th>
+                    <th>Unidade</th>
+                    <th>Período</th>
+                    <th class="num-col">Valor</th>
+                    <th>Observação</th>
+                  </tr>
+                </thead>
+                <tbody id="tabelaCorpo"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEÇÃO 5: NOTÍCIAS E CAMPANHAS -->
+        <section id="sec-comunicados" class="block">
+          <div class="block__head">
+            <div>
+              <h2>Notícias, Atualizações e Campanhas de Saúde</h2>
+              <p>Comunicação institucional e transparência pública para a sociedade e comunidade acadêmica.</p>
+            </div>
+          </div>
+
+          <div class="news-grid" id="newsGrid"></div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div>
+          <strong>Plataforma de Gestão, Visualização e Transparência de Indicadores Hospitalares</strong>
+          <span>Projeto de Extensão • Bacharelado em Sistemas de Informação — UNINASSAU Olinda</span>
+        </div>
+        <div class="footer__right">
+          <span>Fonte: CH em Números (Anuário 2025 • Base 2024)</span>
+          <span>LGPD • Dados agregados institucionais</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- SCRIPTS CARREGADOS NO FINAL PARA GARANTIR EXECUÇÃO SEMPRE -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
